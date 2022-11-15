@@ -976,7 +976,7 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 		    "DISPLAY=:0.0",
 		    "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
 		    NULL };
-		    char * argv[] = {"/home/leandro/AccessibleJoy/Programas/teste", NULL };
+		    char * argv[] = {"/home/leandro/AccessibleJoy/Programas/quadrado", NULL };
 		    call_usermodehelper(argv[0], argv, envp, UMH_WAIT_EXEC);
 		    limitadorq=1;
 		}else if(!(rd[offset+4] & 0x10)&&(limitadorq==1)){
@@ -992,7 +992,7 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 		    "DISPLAY=:0.0",
 		    "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
 		    NULL };
-		    char * argv[] = {"/home/leandro/AccessibleJoy/Programas/hello", NULL };
+		    char * argv[] = {"/home/leandro/AccessibleJoy/Programas/xis", NULL };
 		    call_usermodehelper(argv[0], argv, envp, UMH_WAIT_EXEC);
 		    limitadorx=1;
 		}else if(!(rd[offset+4] & 0x20)&&(limitadorx==1)){
