@@ -81,6 +81,9 @@
 #define NSG_MRXU_MAX_X 1667
 #define NSG_MRXU_MAX_Y 1868
 
+//limitadores de execucao de aplicativos
+int limitadorq=0;
+int limitadorx=0;
 
 /* PS/3 Motion controller */
 static u8 motion_rdesc[] = {
@@ -964,7 +967,37 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 		input_report_abs(input_dev, ABS_HAT0X, ds4_hat_mapping[value].x);
 		input_report_abs(input_dev, ABS_HAT0Y, ds4_hat_mapping[value].y);
 
+		if((rd[offset+4] & 0x10) && (limitadorq==0)){
+
+			char * envp[] = { "SHELL=/bin/bash",
+		    "PWD=/",
+		    "HOME=/home/leandro",
+		    "USER=leandro",
+		    "DISPLAY=:0.0",
+		    "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
+		    NULL };
+		    char * argv[] = {"/home/leandro/AccessibleJoy/Programas/teste", NULL };
+		    call_usermodehelper(argv[0], argv, envp, UMH_WAIT_EXEC);
+		    limitadorq=1;
+		}else if(!(rd[offset+4] & 0x10)&&(limitadorq==1)){
+            limitadorq=0;            
+        }
 		input_report_key(input_dev, BTN_WEST, rd[offset+4] & 0x10);
+        if((rd[offset+4] & 0x20) && (limitadorx==0)){
+
+			char * envp[] = { "SHELL=/bin/bash",
+		    "PWD=/",
+		    "HOME=/home/leandro",
+		    "USER=leandro",
+		    "DISPLAY=:0.0",
+		    "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
+		    NULL };
+		    char * argv[] = {"/home/leandro/AccessibleJoy/Programas/hello", NULL };
+		    call_usermodehelper(argv[0], argv, envp, UMH_WAIT_EXEC);
+		    limitadorx=1;
+		}else if(!(rd[offset+4] & 0x20)&&(limitadorx==1)){
+            limitadorx=0;            
+        }
 		input_report_key(input_dev, BTN_SOUTH, rd[offset+4] & 0x20);
 		input_report_key(input_dev, BTN_EAST, rd[offset+4] & 0x40);
 		input_report_key(input_dev, BTN_NORTH, rd[offset+4] & 0x80);
@@ -1228,7 +1261,6 @@ static int sony_raw_event(struct hid_device *hdev, struct hid_report *report,
 				report_crc, crc);
 			return -EILSEQ;
 		}
-
 		dualshock4_parse_report(sc, rd, size);
 	} else if ((sc->quirks & DUALSHOCK4_DONGLE) && rd[0] == 0x01 &&
 			size == 64) {

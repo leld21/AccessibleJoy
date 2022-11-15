@@ -1,2 +1,2 @@
-/home/leandro/hid-sony/hid-sony.o
+/home/leandro/AccessibleJoy/hid-sony.o
 

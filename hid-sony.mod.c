@@ -68,6 +68,7 @@ __used __section("__versions") = {
 	{ 0xa916b694, "strnlen" },
 	{ 0x410d0bac, "input_allocate_device" },
 	{ 0x54b1fac6, "__ubsan_handle_load_invalid_value" },
+	{ 0xa7eedcc4, "call_usermodehelper" },
 	{ 0x9bec009e, "input_mt_report_slot_state" },
 	{ 0xa6516ab5, "input_mt_sync_frame" },
 	{ 0x6fc35596, "input_event" },
@@ -118,4 +119,4 @@ MODULE_ALIAS("hid:b0003g*v00001345p00003008");
 MODULE_ALIAS("hid:b0005g*v00000609p00000368");
 MODULE_ALIAS("hid:b0005g*v00000609p00000369");
 
-MODULE_INFO(srcversion, "C8913EFC55C98FA6D397D63");
+MODULE_INFO(srcversion, "AF9FCC9C903698C8BD32F67");
