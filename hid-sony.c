@@ -91,6 +91,9 @@ int limitadoraxisbt=0;
 int limitadoraxisdt=0;
 int limitadoraxisdc=0;
 
+int posx= 128;
+int posy = 128;
+
 /* PS/3 Motion controller */
 static u8 motion_rdesc[] = {
 	0x05, 0x01,         /*  Usage Page (Desktop),               */
@@ -933,9 +936,6 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 						struct hid_input, list);
 	struct input_dev *input_dev = hidinput->input;
 
-	__set_bit(BTN_LEFT, input_dev->keybit);
-	__set_bit(BTN_RIGHT, input_dev->keybit);
-
 	unsigned long flags;
 	int n, m, offset, num_touch_data, max_touch_data;
 	u8 cable_state, battery_capacity, battery_charging;
@@ -943,6 +943,9 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 
 	/* When using Bluetooth the header is 2 bytes longer, so skip these. */
 	int data_offset = (sc->quirks & DUALSHOCK4_CONTROLLER_BT) ? 2 : 0;
+
+	__set_bit(BTN_LEFT, input_dev->keybit);
+	__set_bit(BTN_RIGHT, input_dev->keybit);
 
 	/* Second bit of third button byte is for the touchpad button. */
 	offset = data_offset + DS4_INPUT_REPORT_BUTTON_OFFSET;
@@ -1020,15 +1023,25 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 		input_report_abs(input_dev, ABS_RY, rd[offset+3]);
 		*/
 		
-		printk("%d",rd[offset]);
-		printk("%d",rd[offset+1]);
 		printk("%d",rd[offset+2]);
 		printk("%d",rd[offset+3]);
 		
 		input_report_abs(input_dev, ABS_RX, rd[offset]);
 		input_report_abs(input_dev, ABS_RY, rd[offset+1]);
-		input_report_abs(input_dev, ABS_X, rd[offset+2]);
-		input_report_abs(input_dev, ABS_Y, rd[offset+3]);
+		if(rd[offset+2]<128&&posx>1){
+			posx=posx-1;
+		}
+		if(rd[offset+2]>128&&posx<255){
+			posx=posx+1;
+		}
+		if(rd[offset+3]<128&&posy>1){
+			posy=posy-1;
+		}
+		if(rd[offset+3]>128&&posy<255){
+			posy=posy+1;
+		}
+		input_report_abs(input_dev, ABS_X, posx);
+		input_report_abs(input_dev, ABS_Y, posy);
 
 		value = rd[offset+4] & 0xf;
 		if (value > 7)
@@ -1233,7 +1246,6 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 			input_mt_report_slot_state(sc->touchpad, MT_TOOL_FINGER, active);
 
 			if (active) {
-				printk("%d %d",x,y);
 				input_report_abs(sc->touchpad, ABS_MT_POSITION_X, x);
 				input_report_abs(sc->touchpad, ABS_MT_POSITION_Y, y);
 			}
