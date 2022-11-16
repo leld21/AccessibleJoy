@@ -84,6 +84,12 @@
 //limitadores de execucao de aplicativos
 int limitadorq=0;
 int limitadorx=0;
+int limitadorc=0;
+int limitadort=0;
+
+int limitadoraxisbt=0;
+int limitadoraxisdt=0;
+int limitadoraxisdc=0;
 
 /* PS/3 Motion controller */
 static u8 motion_rdesc[] = {
@@ -926,6 +932,10 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 	struct hid_input *hidinput = list_entry(sc->hdev->inputs.next,
 						struct hid_input, list);
 	struct input_dev *input_dev = hidinput->input;
+
+	__set_bit(BTN_LEFT, input_dev->keybit);
+	__set_bit(BTN_RIGHT, input_dev->keybit);
+
 	unsigned long flags;
 	int n, m, offset, num_touch_data, max_touch_data;
 	u8 cable_state, battery_capacity, battery_charging;
@@ -952,14 +962,73 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 	 * applications e.g. games on Wine would not be able to function due
 	 * to different descriptors, which such applications are not parsing.
 	 */
+
 	if (rd[0] == 17) {
 		int value;
-
 		offset = data_offset + DS4_INPUT_REPORT_AXIS_OFFSET;
+		if((rd[offset]>200 && (rd[offset+4] & 0x80)) && (limitadoraxisdt==0)){
+
+			char * envp[] = { "SHELL=/bin/bash",
+		    "PWD=/",
+		    "HOME=/home/leandro",
+		    "USER=leandro",
+		    "DISPLAY=:0.0",
+		    "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
+		    NULL };
+		    char * argv[] = {"/home/leandro/AccessibleJoy/Programas/axisdirtri", NULL };
+		    call_usermodehelper(argv[0], argv, envp, UMH_WAIT_EXEC);
+		    limitadoraxisdt=1;
+		}else if(!(rd[offset+4] & 0x80) && (limitadoraxisdt==1)){
+            limitadoraxisdt=0;       
+        }
+
+        if((rd[offset]>200 && (rd[offset+4] & 0x40)) && (limitadoraxisdc==0)){
+
+			char * envp[] = { "SHELL=/bin/bash",
+		    "PWD=/",
+		    "HOME=/home/leandro",
+		    "USER=leandro",
+		    "DISPLAY=:0.0",
+		    "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
+		    NULL };
+		    char * argv[] = {"/home/leandro/AccessibleJoy/Programas/axisdircirc", NULL };
+		    call_usermodehelper(argv[0], argv, envp, UMH_WAIT_EXEC);
+		    limitadoraxisdc=1;
+		}else if(!(rd[offset+4] & 0x40) && (limitadoraxisdc==1)){
+            limitadoraxisdc=0;       
+        }
+
+        if((rd[offset+1]>200 && (rd[offset+4] & 0x80)) && (limitadoraxisbt==0)){
+
+			char * envp[] = { "SHELL=/bin/bash",
+		    "PWD=/",
+		    "HOME=/home/leandro",
+		    "USER=leandro",
+		    "DISPLAY=:0.0",
+		    "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
+		    NULL };
+		    char * argv[] = {"/home/leandro/AccessibleJoy/Programas/axisbaitri", NULL };
+		    call_usermodehelper(argv[0], argv, envp, UMH_WAIT_EXEC);
+		    limitadoraxisbt=1;
+		}else if(!(rd[offset+4] & 0x80) && (limitadoraxisbt==1)){
+            limitadoraxisbt=0;       
+        }
+		/*
 		input_report_abs(input_dev, ABS_X, rd[offset]);
 		input_report_abs(input_dev, ABS_Y, rd[offset+1]);
 		input_report_abs(input_dev, ABS_RX, rd[offset+2]);
 		input_report_abs(input_dev, ABS_RY, rd[offset+3]);
+		*/
+		
+		printk("%d",rd[offset]);
+		printk("%d",rd[offset+1]);
+		printk("%d",rd[offset+2]);
+		printk("%d",rd[offset+3]);
+		
+		input_report_abs(input_dev, ABS_RX, rd[offset]);
+		input_report_abs(input_dev, ABS_RY, rd[offset+1]);
+		input_report_abs(input_dev, ABS_X, rd[offset+2]);
+		input_report_abs(input_dev, ABS_Y, rd[offset+3]);
 
 		value = rd[offset+4] & 0xf;
 		if (value > 7)
@@ -967,7 +1036,7 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 		input_report_abs(input_dev, ABS_HAT0X, ds4_hat_mapping[value].x);
 		input_report_abs(input_dev, ABS_HAT0Y, ds4_hat_mapping[value].y);
 
-		if((rd[offset+4] & 0x10) && (limitadorq==0)){
+		if((rd[offset+4] & 0x10) && (rd[offset]==128 && rd[offset+1]==128) && (limitadorq==0)){
 
 			char * envp[] = { "SHELL=/bin/bash",
 		    "PWD=/",
@@ -982,8 +1051,10 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 		}else if(!(rd[offset+4] & 0x10)&&(limitadorq==1)){
             limitadorq=0;            
         }
+
 		input_report_key(input_dev, BTN_WEST, rd[offset+4] & 0x10);
-        if((rd[offset+4] & 0x20) && (limitadorx==0)){
+
+        if((rd[offset+4] & 0x20) && (rd[offset]==128 && rd[offset+1]==128) && (limitadorx==0)){
 
 			char * envp[] = { "SHELL=/bin/bash",
 		    "PWD=/",
@@ -998,12 +1069,47 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 		}else if(!(rd[offset+4] & 0x20)&&(limitadorx==1)){
             limitadorx=0;            
         }
+
 		input_report_key(input_dev, BTN_SOUTH, rd[offset+4] & 0x20);
+
+		if((rd[offset+4] & 0x40) && (rd[offset]==128 && rd[offset+1]==128) && (limitadorc==0)){
+
+			char * envp[] = { "SHELL=/bin/bash",
+		    "PWD=/",
+		    "HOME=/home/leandro",
+		    "USER=leandro",
+		    "DISPLAY=:0.0",
+		    "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
+		    NULL };
+		    char * argv[] = {"/home/leandro/AccessibleJoy/Programas/circulo", NULL };
+		    call_usermodehelper(argv[0], argv, envp, UMH_WAIT_EXEC);
+		    limitadorc=1;
+		}else if(!(rd[offset+4] & 0x40)&&(limitadorc==1)){
+            limitadorc=0;            
+        }
+
 		input_report_key(input_dev, BTN_EAST, rd[offset+4] & 0x40);
+
+		if((rd[offset+4] & 0x80) && (rd[offset]==128 && rd[offset+1]==128) && (limitadort==0)){
+
+			char * envp[] = { "SHELL=/bin/bash",
+		    "PWD=/",
+		    "HOME=/home/leandro",
+		    "USER=leandro",
+		    "DISPLAY=:0.0",
+		    "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin",
+		    NULL };
+		    char * argv[] = {"/home/leandro/AccessibleJoy/Programas/triangulo", NULL };
+		    call_usermodehelper(argv[0], argv, envp, UMH_WAIT_EXEC);
+		    limitadort=1;
+		}else if(!(rd[offset+4] & 0x80)&&(limitadort==1)){
+            limitadort=0;            
+        }
+
 		input_report_key(input_dev, BTN_NORTH, rd[offset+4] & 0x80);
 
-		input_report_key(input_dev, BTN_TL, rd[offset+5] & 0x1);
-		input_report_key(input_dev, BTN_TR, rd[offset+5] & 0x2);
+		input_report_key(input_dev, BTN_LEFT, rd[offset+5] & 0x1);
+		input_report_key(input_dev, BTN_RIGHT, rd[offset+5] & 0x2);
 		input_report_key(input_dev, BTN_TL2, rd[offset+5] & 0x4);
 		input_report_key(input_dev, BTN_TR2, rd[offset+5] & 0x8);
 		input_report_key(input_dev, BTN_SELECT, rd[offset+5] & 0x10);
@@ -1094,6 +1200,7 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 	 * The first byte indicates the number of touch data in the report.
 	 * Trackpad data starts 2 bytes later (e.g. 35 for USB).
 	 */
+
 	offset = data_offset + DS4_INPUT_REPORT_TOUCHPAD_OFFSET;
 	max_touch_data = (sc->quirks & DUALSHOCK4_CONTROLLER_BT) ? 4 : 3;
 	if (rd[offset] > 0 && rd[offset] <= max_touch_data)
@@ -1126,6 +1233,7 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 			input_mt_report_slot_state(sc->touchpad, MT_TOOL_FINGER, active);
 
 			if (active) {
+				printk("%d %d",x,y);
 				input_report_abs(sc->touchpad, ABS_MT_POSITION_X, x);
 				input_report_abs(sc->touchpad, ABS_MT_POSITION_Y, y);
 			}
@@ -1191,7 +1299,7 @@ static void nsg_mrxu_parse_report(struct sony_sc *sc, u8 *rd, int size)
 			input_report_abs(sc->touchpad, ABS_MT_POSITION_X, x);
 			input_report_abs(sc->touchpad, ABS_MT_POSITION_Y,
 				NSG_MRXU_MAX_Y - y);
-			/*
+			/* 
 			 * The relative coordinates belong to the first touch
 			 * point, when present, or to the second touch point
 			 * when the first is not active.
