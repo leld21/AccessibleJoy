@@ -17,6 +17,7 @@ Descrição/Description:
 <br />
 Módulo pro linux que subistitui o driver padrao do dualshock 4 (hid-sony.c) para realizar algumas coisas como : mover o mouse com analogico direito, apertar botões do mouse e/ou teclado e relacionar ao aperto de botões ( X,triangulo, quadrado, bola ) e sequencia de comandos (analogico esquerdo pra direita + triangulo ) a execução de scripts ( na pasta programas).
 <br />
+<br />
 Module for linux that replaces the standard dualshock 4 driver (hid-sony.c) to do some things like: move the mouse with the right joystick, press mouse and/or keyboard keys and bind to the press of buttons ( X, triangle, square, circle) and sequence of commands (left analogue to right + triangle) the execution of scripts (in the programas folder).
 <br />
 <br />
@@ -39,6 +40,7 @@ Falta também melhorar a função de mover o cursor, pois está limitado a uma r
 <br />
 Por fim alguns dos programas abertos, como a calculadora (X) e firefox(Circulo) demoram um pouco pra abrir.
 <br/>
+<br />
 It still lacks to put more command options in the module, such as left joystick down + circle, left joystick right + x, etc, and scripts for them.
 <br />
 Also needs to improve the function of moving the cursor, as it is limited to an absolute resolution of 255x255, perhaps using input_report_rel is an option.
