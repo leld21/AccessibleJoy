@@ -8,6 +8,7 @@ além disso, será possível mover o cursor do mouse a partir de um analógico e
 Ao apertar um determinado botao, ou sequencia de comando anteriormente determinado, sera executado um script dentro da pasta programa, que pode ser modificada 
 posteriormente, com a execucao de algum programa, codigo, ou sequencia de botoes.
 <br />
+<br />
 O Arquivo principal eh o hid-sony.c.
 <br />
 
