@@ -946,6 +946,7 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 
 	__set_bit(BTN_LEFT, input_dev->keybit);
 	__set_bit(BTN_RIGHT, input_dev->keybit);
+    __set_bit(KEY_ENTER, input_dev->keybit);
 
 	/* Second bit of third button byte is for the touchpad button. */
 	offset = data_offset + DS4_INPUT_REPORT_BUTTON_OFFSET;
@@ -1023,9 +1024,6 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 		input_report_abs(input_dev, ABS_RY, rd[offset+3]);
 		*/
 		
-		printk("%d",rd[offset+2]);
-		printk("%d",rd[offset+3]);
-		
 		input_report_abs(input_dev, ABS_RX, rd[offset]);
 		input_report_abs(input_dev, ABS_RY, rd[offset+1]);
 		if(rd[offset+2]<128&&posx>1){
@@ -1035,10 +1033,10 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 			posx=posx+1;
 		}
 		if(rd[offset+3]<128&&posy>1){
-			posy=posy-1;
+			posy=posy-2;
 		}
 		if(rd[offset+3]>128&&posy<255){
-			posy=posy+1;
+			posy=posy+2;
 		}
 		input_report_abs(input_dev, ABS_X, posx);
 		input_report_abs(input_dev, ABS_Y, posy);
@@ -1087,7 +1085,7 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 
 		if((rd[offset+4] & 0x40) && (rd[offset]==128 && rd[offset+1]==128) && (limitadorc==0)){
 
-			char * envp[] = { "SHELL=/bin/bash",
+            char * envp[] = { "SHELL=/bin/bash",
 		    "PWD=/",
 		    "HOME=/home/leandro",
 		    "USER=leandro",
@@ -1126,7 +1124,8 @@ static void dualshock4_parse_report(struct sony_sc *sc, u8 *rd, int size)
 		input_report_key(input_dev, BTN_TL2, rd[offset+5] & 0x4);
 		input_report_key(input_dev, BTN_TR2, rd[offset+5] & 0x8);
 		input_report_key(input_dev, BTN_SELECT, rd[offset+5] & 0x10);
-		input_report_key(input_dev, BTN_START, rd[offset+5] & 0x20);
+		//input_report_key(input_dev, BTN_START, rd[offset+5] & 0x20);
+		input_report_key(input_dev, KEY_ENTER, rd[offset+5] & 0x20);
 		input_report_key(input_dev, BTN_THUMBL, rd[offset+5] & 0x40);
 		input_report_key(input_dev, BTN_THUMBR, rd[offset+5] & 0x80);
 

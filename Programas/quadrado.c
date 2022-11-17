@@ -4,7 +4,7 @@
 
 int main()
 {
-    char *arg[] = { "/usr/bin/grub-customizer", NULL };
+    char *arg[] = { "/usr/bin/drawing", NULL };
     execvp(arg[0], arg);
     return 0;
 }

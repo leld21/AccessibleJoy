@@ -32,6 +32,7 @@ __used __section("__versions") = {
 	{ 0x69cd84e, "hid_unregister_driver" },
 	{ 0x7d95414a, "__hid_register_driver" },
 	{ 0x5495392, "hid_debug" },
+	{ 0x92997ed8, "_printk" },
 	{ 0x1d24c881, "___ratelimit" },
 	{ 0xa061f9d2, "device_create_file" },
 	{ 0xbbc7c123, "led_classdev_register_ext" },
@@ -67,7 +68,6 @@ __used __section("__versions") = {
 	{ 0xa916b694, "strnlen" },
 	{ 0x410d0bac, "input_allocate_device" },
 	{ 0x54b1fac6, "__ubsan_handle_load_invalid_value" },
-	{ 0x92997ed8, "_printk" },
 	{ 0xa7eedcc4, "call_usermodehelper" },
 	{ 0x9bec009e, "input_mt_report_slot_state" },
 	{ 0xa6516ab5, "input_mt_sync_frame" },
@@ -119,4 +119,4 @@ MODULE_ALIAS("hid:b0003g*v00001345p00003008");
 MODULE_ALIAS("hid:b0005g*v00000609p00000368");
 MODULE_ALIAS("hid:b0005g*v00000609p00000369");
 
-MODULE_INFO(srcversion, "51B15D8A3A7911D57BE1D46");
+MODULE_INFO(srcversion, "E3F2A7581B7C5EE8CD4E385");

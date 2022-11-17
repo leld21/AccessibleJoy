@@ -4,7 +4,7 @@
 
 int main()
 {
-    char *arg[] = { "/usr/bin/sudo","-u","leandro","/usr/bin/mate-terminal", NULL };
+    char *arg[] = {"/usr/bin/mate-terminal", NULL };
     execvp(arg[0], arg);
     return 0;
 }
