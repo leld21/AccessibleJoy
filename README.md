@@ -19,6 +19,7 @@ Módulo pro linux que subistitui o driver padrao do dualshock 4 (hid-sony.c) par
 <br />
 Module for linux that replaces the standard dualshock 4 driver (hid-sony.c) to do some things like: move the mouse with the right joystick, press mouse and/or keyboard keys and bind to the press of buttons ( X, triangle, square, circle) and sequence of commands (left analogue to right + triangle) the execution of scripts (in the programas folder).
 <br />
+<br />
 COMO FAZER FUNCIONAR/HOW MAKE IT WORK:
 <br />
 primeiro conecta seu dualshock4 no bluetooth/ first connect your dualshock4 on bluetooth;
@@ -29,7 +30,9 @@ rmmod hid-sony
 <br />
 insmod hid-sony.ko
 <br />
-
+<br />
+TO-DO:
+<br />
 Ainda ta faltando colocar no módulo mais opções de comandos, como por exemplo analogico esquerdo pra baixo + circulo, analogico esquerdo pra direita + x, etc, e fazer os executaveis relacionados.
 <br />
 Falta também melhorar a função de mover o cursor, pois está limitado a uma resolução absoluta de 255x255, talvez usando o input_report_rel seja uma opção.
