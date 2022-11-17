@@ -35,15 +35,15 @@ sudo insmod hid-sony.ko
 <br />
 TO-DO:
 <br />
-Ainda ta faltando colocar no módulo mais opções de comandos, como por exemplo analogico esquerdo pra baixo + circulo, analogico esquerdo pra direita + x, etc, e fazer os executaveis relacionados.
+*Ainda ta faltando colocar no módulo mais opções de comandos, como por exemplo analogico esquerdo pra baixo + circulo, analogico esquerdo pra direita + x, etc, e fazer os executaveis relacionados.
 <br />
-Falta também melhorar a função de mover o cursor, pois está limitado a uma resolução absoluta de 255x255, talvez usando o input_report_rel seja uma opção.
+*Falta também melhorar a função de mover o cursor, pois está limitado a uma resolução absoluta de 255x255, talvez usando o input_report_rel seja uma opção.
 <br />
-Por fim alguns dos programas abertos, como a calculadora (X) e firefox(Circulo) demoram um pouco pra abrir.
+*Por fim alguns dos programas abertos, como a calculadora (X) e firefox(Circulo) demoram um pouco pra abrir.
 <br/>
 <br />
-It still lacks to put more command options in the module, such as left joystick down + circle, left joystick right + x, etc, and scripts for them.
+*It still lacks to put more command options in the module, such as left joystick down + circle, left joystick right + x, etc, and scripts for them.
 <br />
-Also needs to improve the function of moving the cursor, as it is limited to an absolute resolution of 255x255, perhaps using input_report_rel is an option.
+*Also needs to improve the function of moving the cursor, as it is limited to an absolute resolution of 255x255, perhaps using input_report_rel is an option.
 <br />
-Finally, some of the programs opened, such as the calculator (X) and firefox (Circulo) take a while to open.
+*Finally, some of the programs opened, such as the calculator (X) and firefox (Circulo) take a while to open.
