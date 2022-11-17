@@ -28,9 +28,9 @@ primeiro conecta seu dualshock4 no bluetooth/ first connect your dualshock4 on b
 <br />
 então/then :
 <br />
-rmmod hid-sony
+sudo rmmod hid-sony
 <br />
-insmod hid-sony.ko
+sudo insmod hid-sony.ko
 <br />
 <br />
 TO-DO:
